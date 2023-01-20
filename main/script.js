@@ -10,13 +10,26 @@ input.addEventListener('input', symbolTyped);
 input.value = "";
 
 let letterIndex = 0;
+let timeStarted;
 
 function symbolTyped() {
     const symbol = getLastLetter(input.value);
     const target = getCurrentLetter();
     markLetter(symbol === target);
-
     letterIndex++;
+    if (letterIndex === 1) {
+        timeStarted = new Date();
+    }
+    if (letterIndex === lessonText.length) {
+        finish();
+    }
+}
+
+function finish() {
+    const timeFinished = new Date();
+    const timePassedSec = (timeFinished.getTime() - timeStarted.getTime()) / 1000;
+    const lps = lessonText.length / timePassedSec * 60;
+    show(`Twoje tempo wynosi: ${lps}`);
 }
 
 initLetterColorSpans();
