@@ -2,15 +2,33 @@ const DEFAULT_TEXT_COLOR = 'black';
 const INCORRECT_COLOR = 'red';
 const CORRECT_COLOR = 'green';
 
+const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
+
 const lesson = document.querySelector('#lesson');
 const input = document.querySelector('#input');
-const lessonText = lesson.innerHTML;
 
-input.addEventListener('input', symbolTyped);
+let lessonText = "";
+
 input.value = "";
-
 let letterIndex = 0;
 let timeStarted;
+
+
+goToNextQuote();
+input.addEventListener('input', symbolTyped);
+
+async function goToNextQuote() {
+    const quote = await loadQuote();
+    lesson.textContent = quote;
+    lessonText = quote;
+    initLetterColorSpans();
+}
+
+function loadQuote() {
+    return fetch(RANDOM_QUOTE_API_URL)
+        .then(response => response.json())
+        .then(data => data.content);
+}
 
 function symbolTyped() {
     const symbol = getLastLetter(input.value);
@@ -30,9 +48,8 @@ function finish() {
     const timePassedSec = (timeFinished.getTime() - timeStarted.getTime()) / 1000;
     const lps = lessonText.length / timePassedSec * 60;
     show(`Twoje tempo wynosi: ${lps}`);
-}
 
-initLetterColorSpans();
+}
 
 function initLetterColorSpans() {
     let result = "";
