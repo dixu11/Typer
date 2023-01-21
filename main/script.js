@@ -1,4 +1,4 @@
-const DEFAULT_TEXT_COLOR = 'lightgray';
+const DEFAULT_TEXT_COLOR = 'black';
 const INCORRECT_COLOR = 'red';
 const CORRECT_COLOR = 'green';
 
